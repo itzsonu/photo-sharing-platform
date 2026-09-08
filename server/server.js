@@ -3,21 +3,22 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const connectDB = require('./config/db');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
+const authRoutes = require('./routes/authRoutes'); 
 
 dotenv.config(); // load .env variables
 connectDB(); // connect to MongoDB
 
 const app = express();
 
-app.use(cors()); // allow cross-origin requests from React frontend
-app.use(express.json()); // parse incoming JSON requests
-
-// test route to confirm server is running
+app.use(cors()); 
+app.use(express.json()); 
 app.get('/', (req, res) => {
   res.send('Photo Sharing API is running...');
 });
 
-// error handling middleware (must be after routes)
+app.use('/api/auth', authRoutes); 
+
+
 app.use(notFound);
 app.use(errorHandler);
 
